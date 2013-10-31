@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Hello</string>
     <string name="hello">Hello!</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
-    <string name="enter_something">Enter some content</string>
-
-    <string name="go">Go</string>
     <string name="share">Share</string>
-
-    <string name="bringdown">Copy Down</string>
-    <string name="bringup">Copy Up</string>
-
-
+    <string name="swap">Swap</string>
+    <string name="enter_something">Enter some content</string>
 </resources>

@@ -2,52 +2,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity$PlaceholderFragment"
-    android:orientation="vertical">
+    tools:context=".MainActivity$PlaceholderFragment">
 
     <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/data"
-        android:inputType="text"
-        android:hint="@string/enter_something" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/bringdown"
-        android:id="@+id/btncopydown"
-        android:layout_below="@+id/data"
-        android:layout_alignParentLeft="true"
-        android:onClick="btnCopyDown" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/bringup"
-        android:id="@+id/btncopyup"
-        android:layout_below="@+id/data"
-        android:layout_alignRight="@+id/data"
-        android:onClick="btnCopyUp" />
-
-    <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/enter_something"
+        android:inputType="text" />
+
+
+    <EditText
         android:id="@+id/result"
-        android:layout_below="@+id/btncopydown"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_below="@+id/data"
         android:hint="@string/enter_something" />
 
     <Button
+        android:id="@+id/btnhello"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello"
-        android:id="@+id/btnhello"
-        android:layout_below="@+id/result"
         android:layout_alignParentLeft="true"
-        android:onClick="btnHello" />
+        android:layout_below="@+id/result"
+        android:onClick="btnHello"
+        android:text="@string/hello" />
+
+    <Button
+        android:id="@+id/btnswap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="btnSwap"
+        android:text="@string/swap"
+        android:layout_alignTop="@+id/btnhello"
+        android:layout_toRightOf="@+id/btnhello" />
 </RelativeLayout>
