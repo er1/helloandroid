@@ -7,4 +7,5 @@
     <string name="share">Share</string>
     <string name="swap">Swap</string>
     <string name="enter_something">Enter some content</string>
+    <string name="result_area">Encrypted result</string>
 </resources>
