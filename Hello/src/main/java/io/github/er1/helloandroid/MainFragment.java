@@ -24,7 +24,7 @@ public class MainFragment extends Fragment implements OnClickListener {
     TextView tvData;
     TextView tvResult;
     ListView lvList;
-    CharSequence sharedText = "";
+    String sharedText = "";
 
     public static String rot13(CharSequence in) {
         StringBuilder out = new StringBuilder();
@@ -65,6 +65,7 @@ public class MainFragment extends Fragment implements OnClickListener {
         btnShare = (Button) rootView.findViewById(R.id.btnshare);
         tvData = (TextView) rootView.findViewById(R.id.data);
         tvResult = (TextView) rootView.findViewById(R.id.result);
+
         lvList = (ListView) rootView.findViewById(R.id.list);
 
         btnHello.setOnClickListener(this);
@@ -74,13 +75,14 @@ public class MainFragment extends Fragment implements OnClickListener {
         tvData.addTextChangedListener(new TextProcessor(tvResult));
         tvData.setText(sharedText);
 
-        SimpleCursorAdapter sca = new SimpleCursorAdapter(getActivity(),
+        SimpleCursorAdapter sca;
+
+        sca = new SimpleCursorAdapter(getActivity(),
                 android.R.layout.simple_list_item_2,
                 getTestCursor(),
                 new String[]{"val", "desc"},
                 new int[]{android.R.id.text1, android.R.id.text2},
                 0);
-
         lvList.setAdapter(sca);
 
         return rootView;
@@ -98,8 +100,7 @@ public class MainFragment extends Fragment implements OnClickListener {
     }
 
     public void share() {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
+        Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT, sharedText);
         intent.setType("text/plain");
         startActivity(intent);
@@ -122,7 +123,7 @@ public class MainFragment extends Fragment implements OnClickListener {
     }
 
     public void setSharedText(CharSequence sharedText) {
-        this.sharedText = sharedText;
+        this.sharedText = sharedText.toString();
         if (tvData != null) {
             tvData.setText(this.sharedText);
         }
@@ -145,7 +146,7 @@ public class MainFragment extends Fragment implements OnClickListener {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            sharedText = s;
+            sharedText = s.toString();
             target.setText(rot13(s));
         }
     }

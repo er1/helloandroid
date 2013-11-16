@@ -21,7 +21,8 @@ public class MainActivity extends FragmentActivity {
         }
 
         if (Intent.ACTION_SEND.equals(intent.getAction())) {
-            mainfragment.setSharedText(intent.getStringExtra(Intent.EXTRA_TEXT));
+            String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+            mainfragment.setSharedText(sharedText);
         }
     }
 }
