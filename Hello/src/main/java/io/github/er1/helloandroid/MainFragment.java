@@ -1,9 +1,11 @@
 package io.github.er1.helloandroid;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.Editable;
@@ -25,6 +27,8 @@ public class MainFragment extends Fragment implements OnClickListener {
     TextView tvResult;
     ListView lvList;
     String sharedText = "";
+
+    SharedPreferences prefs;
 
     public static String rot13(CharSequence in) {
         StringBuilder out = new StringBuilder();
@@ -59,6 +63,8 @@ public class MainFragment extends Fragment implements OnClickListener {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         if (rootView == null)
             return null;
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         btnHello = (Button) rootView.findViewById(R.id.btnhello);
         btnSwap = (Button) rootView.findViewById(R.id.btnswap);
