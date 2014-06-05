@@ -5,6 +5,9 @@
     <string name="hello_world">Hello, World!</string>
     <string name="action_share">Share</string>
     <string name="action_swap">Swap</string>
+    <string name="action_show">Show</string>
+    <string name="action_list">List</string>
+    <string name="action_notify">Notify</string>
     <string name="hint_input">Plaintext</string>
     <string name="hint_result">Ciphertext</string>
 </resources>
