@@ -3,6 +3,7 @@ package io.github.er1.helloandroid;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,20 +12,14 @@ import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Arrays;
 
@@ -33,13 +28,10 @@ public class MainFragment extends Fragment implements OnClickListener {
             R.id.btnhello,
             R.id.btnswap,
             R.id.btnshare,
-            R.id.btnshow,
             R.id.btnlist,
-            R.id.btnnotify
     };
     TextView tvData;
     TextView tvResult;
-    ListView lvList;
     String sharedText = "";
     SharedPreferences prefs;
 
@@ -84,39 +76,42 @@ public class MainFragment extends Fragment implements OnClickListener {
 
         tvData = (TextView) rootView.findViewById(R.id.data);
         tvResult = (TextView) rootView.findViewById(R.id.result);
-        lvList = (ListView) rootView.findViewById(R.id.list);
 
         tvData.addTextChangedListener(new TextProcessor(tvResult));
         tvData.setText(sharedText);
-
-        SimpleCursorAdapter sca;
-
-        sca = new SimpleCursorAdapter(getActivity(),
-//                android.R.layout.simple_list_item_2,
-                R.layout.list_main,
-                getTestCursor(),
-                new String[]{"val", "desc"},
-                new int[]{android.R.id.text1, android.R.id.text2},
-                0);
-        lvList.setAdapter(sca);
-
-        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle b = new Bundle();
-                b.putString(TextFragment.ARG_CONTENT, Long.toString(id));
-                Fragment f = new TextFragment();
-                f.setArguments(b);
-                FragmentActivity fa = getActivity();
-                fa.getSupportFragmentManager().beginTransaction().replace(R.id.container, f).addToBackStack(null).commit();
-            }
-        });
 
         return rootView;
     }
 
     private void hello() {
-        Toast.makeText(getActivity(), R.string.hello_world, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity(), R.string.hello_world, Toast.LENGTH_LONG).show();
+        new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.hello)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        NotificationManager nm = (NotificationManager) getActivity().getSystemService(Activity.NOTIFICATION_SERVICE);
+                        PendingIntent pendingIntent = PendingIntent.getService(getActivity(), 0, new Intent(getActivity(), MainService.class), 0);
+                        nm.notify(1, new NotificationCompat.Builder(getActivity())
+                                .setContentTitle("\u03c0")
+                                .setContentText(getResources().getText(R.string.hello_world))
+                                .setSmallIcon(R.drawable.ic_notification)
+                                .setWhen(0)
+                                .setOngoing(true)
+                                .setContentIntent(pendingIntent)
+                                .build());
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        NotificationManager nm = (NotificationManager) getActivity().getSystemService(Activity.NOTIFICATION_SERVICE);
+                        nm.cancel(1);
+                    }
+                })
+                .setIcon(R.drawable.ic_launcher)
+                .setMessage(R.string.hello_world)
+                .show();
     }
 
     private void swap() {
@@ -128,41 +123,8 @@ public class MainFragment extends Fragment implements OnClickListener {
 
     private void share() {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, tvData.getText());
-        intent.setType("text/plain");
-        startActivity(intent);
-    }
-
-    private void show() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(tvData.getText());
-        Bundle b = new Bundle();
-        b.putString(TextFragment.ARG_CONTENT, sb.toString());
-        Fragment f = new TextFragment();
-        f.setArguments(b);
-        FragmentActivity fa = getActivity();
-        fa.getSupportFragmentManager()
-                .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.container, f)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    private void notification() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(tvData.getText());
-
-        NotificationManager nm = (NotificationManager) getActivity().getSystemService(Activity.NOTIFICATION_SERVICE);
-        if (sb.length() == 0)
-            nm.cancel(1);
-        else
-            nm.notify(1, new NotificationCompat.Builder(getActivity())
-                    .setContentText(sb.toString())
-                    .setContentTitle("\u03c0")
-                    .setSmallIcon(R.drawable.ic_notification)
-                    .setWhen(0)
-                    .build());
+        intent.putExtra(Intent.EXTRA_TEXT, String.valueOf(tvData.getText())).setType("text/plain");
+        startActivity(Intent.createChooser(intent, getResources().getString(R.string.app_name)));
     }
 
     @Override
@@ -177,14 +139,8 @@ public class MainFragment extends Fragment implements OnClickListener {
             case R.id.btnshare:
                 share();
                 return;
-            case R.id.btnshow:
-                show();
-                return;
             case R.id.btnlist:
                 list();
-                return;
-            case R.id.btnnotify:
-                notification();
                 return;
             default:
         }
@@ -204,13 +160,6 @@ public class MainFragment extends Fragment implements OnClickListener {
                 .show();
     }
 
-    public void setSharedText(CharSequence sharedText) {
-        this.sharedText = sharedText.toString();
-        if (tvData != null) {
-            tvData.setText(this.sharedText);
-        }
-    }
-
     private class TextProcessor implements TextWatcher {
         TextView target;
 
@@ -228,8 +177,7 @@ public class MainFragment extends Fragment implements OnClickListener {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            StringBuilder sb = new StringBuilder();
-            sharedText = sb.append(s).toString();
+            sharedText = String.valueOf(s);
             target.setText(rot13(s));
         }
     }
