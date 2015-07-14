@@ -39,12 +39,6 @@
                 android:hint="@string/hint_result" />
 
             <Button
-                android:id="@+id/btnhello"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/hello" />
-
-            <Button
                 android:id="@+id/btnswap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

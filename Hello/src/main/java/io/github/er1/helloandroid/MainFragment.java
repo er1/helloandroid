@@ -25,7 +25,6 @@ import java.util.Arrays;
 
 public class MainFragment extends Fragment implements OnClickListener {
     private static int[] BUTTONS = new int[]{
-            R.id.btnhello,
             R.id.btnswap,
             R.id.btnshare,
             R.id.btnlist,
@@ -83,37 +82,6 @@ public class MainFragment extends Fragment implements OnClickListener {
         return rootView;
     }
 
-    private void hello() {
-        //Toast.makeText(getActivity(), R.string.hello_world, Toast.LENGTH_LONG).show();
-        new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.hello)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        NotificationManager nm = (NotificationManager) getActivity().getSystemService(Activity.NOTIFICATION_SERVICE);
-                        PendingIntent pendingIntent = PendingIntent.getService(getActivity(), 0, new Intent(getActivity(), MainService.class), 0);
-                        nm.notify(1, new NotificationCompat.Builder(getActivity())
-                                .setContentTitle("\u03c0")
-                                .setContentText(getResources().getText(R.string.hello_world))
-                                .setSmallIcon(R.drawable.ic_notification)
-                                .setWhen(0)
-                                .setOngoing(true)
-                                .setContentIntent(pendingIntent)
-                                .build());
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        NotificationManager nm = (NotificationManager) getActivity().getSystemService(Activity.NOTIFICATION_SERVICE);
-                        nm.cancel(1);
-                    }
-                })
-                .setIcon(R.drawable.ic_launcher)
-                .setMessage(R.string.hello_world)
-                .show();
-    }
-
     private void swap() {
         CharSequence a = tvData.getText();
         CharSequence b = tvResult.getText();
@@ -130,9 +98,6 @@ public class MainFragment extends Fragment implements OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btnhello:
-                hello();
-                return;
             case R.id.btnswap:
                 swap();
                 return;

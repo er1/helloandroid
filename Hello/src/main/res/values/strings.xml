@@ -3,6 +3,7 @@
     <string name="app_name">Hello</string>
     <string name="hello">Hello!</string>
     <string name="hello_world">Hello, World!</string>
+    <string name="rot13">ROT13</string>
     <string name="action_share">Share</string>
     <string name="action_swap">Swap</string>
     <string name="action_list">List</string>
